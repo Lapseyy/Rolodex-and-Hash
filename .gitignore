@@ -1,0 +1,15 @@
+
+
+main
+main-tests
+main-sandbox
+leak-checker
+
+*.o
+*~
+*.swp
+
+grader-output-readme/
+results*.json
+
+
