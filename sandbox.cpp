@@ -20,6 +20,7 @@ int main()
 {
 	//
 	cout << "Hi. Put anything here you'd like." << endl;
+	cout << "Testing git" << endl;
 	
 	return 0;
 }

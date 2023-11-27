@@ -17,7 +17,7 @@ You'll implement code in several files:
 
 * MyHashTable.hpp
 * MyRolodex.hpp
-* MyRolodex.cpp
+* MyeRolodx.cpp
 * sandbox.cpp (optional)
 
 You may add helper functions to classes within the above source files, but do not remove or modify any existing functions. Unit tests to determine your grade will be run against the code in the above files.
