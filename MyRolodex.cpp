@@ -27,7 +27,7 @@ namespace CPSC131::MyRolodex
 	 */
 	bool MyRolodex::exists(std::string name) const
 	{
-		return this->table_.exist(name);	
+		return this->table_.exists(name);	
 	}
 	
 	/*
@@ -95,7 +95,7 @@ namespace CPSC131::MyRolodex
 	 */
 	size_t MyRolodex::size()
 	{
-		return 0;
+		return this->table_.size();
 	}
 }
 

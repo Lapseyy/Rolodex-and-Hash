@@ -150,12 +150,3 @@ clean:
 	-rm $(BIN_LEAK_CHECKER_NAME)
 	-rm results.json
 .PHONY: clean
-
-
-
-
-
-
-
-
-
