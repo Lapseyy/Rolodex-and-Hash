@@ -5,6 +5,8 @@
 #include "MyHashTable.hpp"
 #include "Address.hpp"
 
+#include <string>	//I added this.
+
 
 /**
  * TODO: Finish the implementation for this class
@@ -25,16 +27,23 @@ namespace CPSC131::MyRolodex
 	 */
 	bool MyRolodex::exists(std::string name) const
 	{
-		return false;
+		return this->table_.exist(name);	
 	}
 	
-	/**
+	/*
 	 * Allow the user to add an address using its parts.
 	 * This should probably just call on the other overload
 	 */
 	void MyRolodex::add(std::string name, std::string line1, std::string line2, std::string city, std::string state, int zip, std::string country)
 	{
-		
+		Address a1; 
+		a1.line1 = line1; 
+		a1.line2 = line2;
+		a1.city = city;
+		a1.state = state; 
+		a1.zip = zip;
+		a1.country = country;
+		this->add(name, a1);
 	}
 	
 	/**
@@ -44,6 +53,7 @@ namespace CPSC131::MyRolodex
 	 */
 	void MyRolodex::add(std::string name, Address address)
 	{
+		this->table_.add(name, address);
 		
 	}
 	
@@ -52,7 +62,7 @@ namespace CPSC131::MyRolodex
 	 */
 	Address MyRolodex::get(std::string name) const
 	{
-		return Address();
+		return this->table_.get(name);
 	}
 	
 	/**
@@ -60,7 +70,7 @@ namespace CPSC131::MyRolodex
 	 */
 	void MyRolodex::remove(std::string name)
 	{
-		
+		this->table_.remove(name);
 	}
 	
 	/**
@@ -69,7 +79,7 @@ namespace CPSC131::MyRolodex
 	 */
 	void MyRolodex::clear()
 	{
-		
+		this->table_.clear();
 	}
 	
 	/**
@@ -77,7 +87,7 @@ namespace CPSC131::MyRolodex
 	 */
 	bool MyRolodex::empty()
 	{
-		return true;
+		return this->table_.empty();
 	}
 	
 	/**

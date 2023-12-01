@@ -177,7 +177,9 @@ namespace CPSC131::MyHashTable
 			 */
 			void add(std::string key, VTYPE value)
 			{
-				
+				// if (){
+
+				// }
 			}
 			
 			/**
