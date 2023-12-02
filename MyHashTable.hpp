@@ -14,6 +14,7 @@
 #include <string>
 #include <stdexcept>
 #include <iostream>
+#include <cmath>
 
 
 //	More includes ... ?
@@ -53,10 +54,16 @@ namespace CPSC131::MyHashTable
 			 */
 			MyHashTable(const MyHashTable& other)
 			{
-				this->table_ = other.table_;
+				this->clear();
+				std::forward_list<std::string> keys = other.getAllKeys();
 				this->size_ = other.size();
 				this->n_collisions_ = other.n_collisions();
 				this->capacity_ = other.capacity();
+				this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[this->capacity_];
+				for(auto& i: keys){
+					size_t index = this->midSquareHash(i);
+					this->table_[index].push_front(make_pair(i, other.get(i)));
+				}
 			}
 			
 			/**
@@ -68,9 +75,10 @@ namespace CPSC131::MyHashTable
 			~MyHashTable()
 			{
 				if(this->table_ != nullptr){
-					while(this->table_ != nullptr){
-						this->table_->pop_front();
-					}
+					// while(this->table_ != nullptr){
+					// 	this->table_->pop_front();
+					// }
+					this->table_->clear();
 				}
 				this->size_ =0;
 				this->n_collisions_ = 0;
@@ -164,7 +172,24 @@ namespace CPSC131::MyHashTable
 			 */
 			unsigned long long int midSquareHash(std::string key) const
 			{
-				return 0;
+				unsigned long long int sum = 1;
+				for(char& c: key){
+					sum = sum * static_cast<unsigned long long int> (c);
+					sum = sum % ULLONG_WRAP_AT;
+					//std::cout << "sum is " << sum << std::endl;
+				}
+				//std::cout << "total sum is " << sum << std::endl;
+				sum = sum * sum;
+				//std::cout << "SQaured is " << sum << std::endl;
+				std::string half = std::to_string(sum);
+				half = half.substr(floor(half.length()/ 4), half.length()/2);
+				//std::cout << "string is " << half << std::endl;
+				unsigned long long int hashcode = std::stoull(half);
+				//std::cout << "hascode is " << hashcode << " " << this->capacity_ << std::endl;
+				hashcode %= this->capacity_;
+				//std::cout << "hascode is " << hashcode << std::endl;
+				return hashcode;
+
 			}
 			
 			/**
@@ -209,8 +234,13 @@ namespace CPSC131::MyHashTable
 			void add(std::string key, VTYPE value)
 			{	
 				//std::cout << key << value << std::endl;
-				//size_t index = hash(key) % capacity_;
-            	table_->emplace_front(make_pair(key, value));
+				size_t index = this->midSquareHash(key);
+				for(auto& i : *this->table_ ){
+					if(key == i.first){
+					throw std::runtime_error("Key already exists: " + key);;
+					}
+				}
+            	table_[index].push_front(make_pair(key, value));
 				this->size_++;
 			}
 			
@@ -220,7 +250,8 @@ namespace CPSC131::MyHashTable
 			 */
 			VTYPE& get(std::string key) const
 			{
-				for(auto& i : *this->table_ ){
+				size_t index = this->midSquareHash(key);
+				for(auto& i : this->table_[index] ){
 					if(key == i.first){
 						return i.second;
 					}
@@ -244,8 +275,10 @@ namespace CPSC131::MyHashTable
 			std::forward_list<std::string> getAllKeys(bool sorted = false) const
 			{
 				std::forward_list<std::string> keys;
-				for(auto& i : *this->table_ ){
-					keys.push_front(i.first);
+				for(size_t i = 0; i < capacity_; ++i){
+					for(auto& j: this->table_[i]){
+						keys.push_front(j.first);
+					}
 				}
 				if(sorted == true){
 					keys.sort();
@@ -259,7 +292,8 @@ namespace CPSC131::MyHashTable
 			 */
 			void remove(std::string key)
 			{
-				for(auto& i : *this->table_ ){
+				size_t index = this->midSquareHash(key);
+				for(auto& i : this->table_[index] ){
 					if(key == i.first){
 						this->table_->remove_if([&key](std::pair<std::string, VTYPE>& i ){ return i.first == key; });
 						this->size_--;
@@ -275,12 +309,13 @@ namespace CPSC131::MyHashTable
 			 */
 			void clear()
 			{
-				// for(std::pair<std::string, VTYPE>& c: this->table_){
-				// 	cout <<  c.first() << endl;
-				
-				//}
-				this->table_->clear();
-				this->table_ = 0;
+
+				std::forward_list<std::string> keys = this->getAllKeys();
+				for(auto& i: keys){
+					this->remove(i);
+				}
+				this->size_ = 0;
+				this->n_collisions_ = 0;
 			}
 			
 			/**
@@ -288,13 +323,12 @@ namespace CPSC131::MyHashTable
 			 */
 			MyHashTable<VTYPE>& operator=(const MyHashTable<VTYPE>& other)
 			{
-				this->table_->clear();
+				this->clear();
 				std::forward_list<std::string> keys = other.getAllKeys();
 				for(auto& i: keys){
-					this->table_->emplace_front(make_pair(i, other.get(i)));
-				
+					size_t index = this->midSquareHash(i);
+					this->table_[index].push_front(make_pair(i, other.get(i)));
 				}
-				
 				this->capacity_ = other.capacity();
 				this->n_collisions_ = other.n_collisions();
 				this->size_ = other.size();

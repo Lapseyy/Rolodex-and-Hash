@@ -246,16 +246,13 @@ MyHashTable<string> createWordTable(size_t capacity, bool longWords, bool shortD
 	//
 	size_t i = 0;
 	for ( auto word : g_words ) {
-		
 		//
 		if ( longWords == true ) {
 			word = increaseWordLength(word);
 		}
-		
 		//
 		table.add(word, "Value for word: " + word);
 		i++;
-		
 		//
 		if ( shortDict == true && i >= 1000 ) {
 			break;
@@ -343,7 +340,7 @@ void testHashingFunctions(Tests& tests)
 			
 			//
 			word = increaseWordLength(word);
-			
+
 			//
 			unsigned long long int
 				code1 = table1.midSquareHash(word),
