@@ -151,13 +151,17 @@ namespace CPSC131::MyHashTable
 				if(this->table_ != nullptr){
 					std::forward_list<std::pair<std::string, VTYPE>>* temp = this->table_;
 					this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[c];
-					for (auto& entry : *temp)
-					{
-						this->add(entry.first, entry.second);
+					for(size_t i = 0; i < this->capacity_; i++){
+						for (auto& entry : temp[i])
+						{
+							this->add(entry.first, entry.second);
+						}	
 					}
+					
 					delete[] temp;
 				}
 				this->capacity_ = c;
+				
 			}
 			
 			///	Your welcome
@@ -203,15 +207,15 @@ namespace CPSC131::MyHashTable
 			}
 			unsigned long long int myCustomHashFunction2(std::string key) const
 			{
-				return 0;
+				return this->midSquareHash(key);
 			}
 			unsigned long long int myCustomHashFunction3(std::string key) const
 			{
-				return 0;
+				return this->midSquareHash(key);
 			}
 			unsigned long long int myCustomHashFunction4(std::string key) const
 			{
-				return 0;
+				return this->midSquareHash(key);
 			}
 			
 			/**
@@ -236,15 +240,15 @@ namespace CPSC131::MyHashTable
 			{	
 				//std::cout << key << value << std::endl;
 				
-				
-				for(auto& i : *this->table_ ){
+				size_t index = this->midSquareHash(key);
+				for(auto& i : this->table_[index] ){
 					if(key == i.first){
 					throw std::runtime_error("Key already exists: " + key);;
 					}
 				}
-				size_t index = this->midSquareHash(key);
+				//size_t index = this->midSquareHash(key);
 				if(!this->table_[index].empty()){
-					this->n_collisions_ ++;
+					this->n_collisions_++;
 				}
             	table_[index].emplace_front(key, value);
 				this->size_++;
@@ -301,7 +305,7 @@ namespace CPSC131::MyHashTable
 				size_t index = this->midSquareHash(key);
 				for(auto& i : this->table_[index] ){
 					if(key == i.first){
-						this->table_->remove_if([&key](std::pair<std::string, VTYPE>& i ){ return i.first == key; });
+						this->table_[index].remove_if([&key](std::pair<std::string, VTYPE>& i ){ return i.first == key; });
 						this->size_--;
 						return ;
 					}
@@ -315,13 +319,12 @@ namespace CPSC131::MyHashTable
 			 */
 			void clear()
 			{
-
-				std::forward_list<std::string> keys = this->getAllKeys();
-				for(auto& i: keys){
-					this->remove(i);
-				}
+				for(size_t i = 0; i < this->capacity_; i++){
+					this->table_[i].clear();
+				} 
 				this->size_ = 0;
 				this->n_collisions_ = 0;
+
 			}
 			
 			/**

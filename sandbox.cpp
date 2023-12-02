@@ -25,9 +25,9 @@ using std::cout, std::cin, std::endl, std::string;
 //
 int main()
 {
-	//
-	// cout << "Hi. Put anything here you'd like." << endl;
-	// cout << "Testing git" << endl;
+	
+	cout << "Hi. Put anything here you'd like." << endl;
+	cout << "Testing git" << endl;
 	MyHashTable<string> table(20);
 	cout << table.capacity() << endl;
 	string name = "Edmarck" ;
@@ -41,44 +41,47 @@ int main()
 	for(auto& i : keys){
 		cout << i << endl;
 	}
-	// // table.remove(name);
-	// // //table.get(name);
-	// // cout << table.get("a") << endl;
-	// // table.clear();
-	// // cout << "HERE" << endl;
-	// // cout << table.get("a") << endl;
-
-	//cout << table.midSquareHash("iuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiun");
-	cout << "COMPLETED" << endl;
-
-	MyHashTable<string> table2(20);
-	cout << "table  works " <<  table.get("karl") << endl;
-	table2 = table;
-	cout << "table 2 works " << table2.get("karl") << endl; 
-	MyHashTable<string> table3(table);
-	cout <<"tABLE 3 WORKS " << table3.get("karl") << endl;
-
-
+	// table.add("a", "abc");
+	// table.remove("a");
+	//table.get(name);
+	//cout << table.get("a") << endl;
+	//table.clear();
+	// cout << "HERE" << endl;
+	// cout << table.get("a") << endl;
+	table.setCapacity(100000);
+	cout << table.capacity();
 	table.clear();
+	//cout << table.midSquareHash("iuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiuniuI1U11W1EH3F3I4U4b4w4eiun");
+	// cout << "COMPLETED" << endl;
 
-		//
-	MyRolodex dex;
+	// MyHashTable<string> table2(20);
+	// cout << "table  works " <<  table.get("karl") << endl;
+	// table2 = table;
+	// cout << "table 2 works " << table2.get("karl") << endl; 
+	// MyHashTable<string> table3(table);
+	// cout <<"tABLE 3 WORKS " << table3.get("karl") << endl;
+
+
+	// table.clear();
+
+	// 	//
+	// MyRolodex dex;
 	
-	//
-	std::shared_ptr<Address> larry_address(new Address);
-	larry_address->line1 = "1212122 Lane Road";
-	larry_address->line2 = "";
-	larry_address->city = "Fullerton";
-	larry_address->state = "CA";
-	larry_address->zip = 92831;
-	larry_address->country = "US";
+	// //
+	// std::shared_ptr<Address> larry_address(new Address);
+	// larry_address->line1 = "1212122 Lane Road";
+	// larry_address->line2 = "";
+	// larry_address->city = "Fullerton";
+	// larry_address->state = "CA";
+	// larry_address->zip = 92831;
+	// larry_address->country = "US";
 
-	dex.add("Gary", "1212121 Lane Way", "", "Fullerton", "CA", 92831, "US");
-	dex.add("Larry", *larry_address);
-	dex.add("Harry", "1212123 Lane Place", "", "Fullerton", "CA", 92831, "US");
-	dex.add("Sally", "1212124 Lane Blvd", "", "Fullerton", "CA", 92831, "US");
-	Address larryReturn = dex.get("Larry");
-	cout << dex.exists("Larry") << endl;
+	// dex.add("Gary", "1212121 Lane Way", "", "Fullerton", "CA", 92831, "US");
+	// dex.add("Larry", *larry_address);
+	// dex.add("Harry", "1212123 Lane Place", "", "Fullerton", "CA", 92831, "US");
+	// dex.add("Sally", "1212124 Lane Blvd", "", "Fullerton", "CA", 92831, "US");
+	// Address larryReturn = dex.get("Larry");
+	// cout << dex.exists("Larry") << endl;
 
 
 

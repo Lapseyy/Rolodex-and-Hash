@@ -70,7 +70,19 @@ namespace CPSC131::MyRolodex
 	 */
 	void MyRolodex::remove(std::string name)
 	{
-		this->table_.remove(name);
+		//
+		if(!this->table_.exists(name)){
+			throw std::runtime_error("Entry not found: " + name);
+		}
+		if (this->table_.exists(name)){
+        this->table_.remove(name);
+    }
+    else{
+        throw std::runtime_error("Entry not found: " + name);
+		return;
+    }
+		//
+		//this->table_.remove(name);
 	}
 	
 	/**
