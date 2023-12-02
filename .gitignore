@@ -12,6 +12,5 @@ leak-checker
 grader-output-readme/
 results*.json
 
-.vscode/
 
 
