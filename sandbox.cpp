@@ -30,7 +30,16 @@ int main()
 	string name = "Edmarck" ;
 	string address = "ace";
 	table.add(name, address);
-	
+	table.add("a", address);
+	table.add("b", address);
+	cout << table.get(name) << endl;
+
+				std::forward_list<std::string> keys = table.getAllKeys();
+				for(auto& i : keys){
+					cout << i << endl;
+				}
+	table.remove(name);
+	table.get(name);
 	return 0;
 }
 

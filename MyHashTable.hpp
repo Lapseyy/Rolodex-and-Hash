@@ -206,7 +206,7 @@ namespace CPSC131::MyHashTable
 				//std::cout << key << value << std::endl;
 				//size_t index = hash(key) % capacity_;
             	table_->emplace_front(make_pair(key, value));
-				std::cout << "we hhere :3" << std::endl;
+				this->size_++;
 			}
 			
 			/**
@@ -215,6 +215,11 @@ namespace CPSC131::MyHashTable
 			 */
 			VTYPE& get(std::string key) const
 			{
+				for(auto& i : *this->table_ ){
+					if(key == i.first){
+						return i.second;
+					}
+				}
 				throw std::runtime_error("Cannot get value for key because it doesn't exist: " + key);
 			}
 			
@@ -234,7 +239,12 @@ namespace CPSC131::MyHashTable
 			std::forward_list<std::string> getAllKeys(bool sorted = false) const
 			{
 				std::forward_list<std::string> keys;
-				
+				for(auto& i : *this->table_ ){
+					keys.push_front(i.first);
+				}
+				if(sorted == true){
+					keys.sort();
+				}
 				return keys;
 			}
 			
@@ -244,6 +254,13 @@ namespace CPSC131::MyHashTable
 			 */
 			void remove(std::string key)
 			{
+				for(auto& i : *this->table_ ){
+					if(key == i.first){
+						this->table_->remove_if([&key](std::pair<std::string, VTYPE>& i ){ return i.first == key; });
+						this->size_--;
+						return ;
+					}
+				}
 				throw std::runtime_error("Cannot remove value for key because it doesn't exist: " + key);
 			}
 			
