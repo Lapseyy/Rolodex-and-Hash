@@ -41,8 +41,8 @@ int main()
 	for(auto& i : keys){
 		cout << i << endl;
 	}
-	// table.add("a", "abc");
-	// table.remove("a");
+	table.add("a", "abc");
+	table.remove("a");
 	//table.get(name);
 	//cout << table.get("a") << endl;
 	//table.clear();

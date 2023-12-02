@@ -43,7 +43,7 @@ namespace CPSC131::MyHashTable
 			 */
 			MyHashTable(size_t capacity = MyHashTable::DEFAULT_CAPACITY)
 			{
-				this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[capacity];
+				//this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[capacity];
 				this->setCapacity(capacity);
 				this->size_ = 0;
 				this->n_collisions_ = 0;
@@ -54,16 +54,17 @@ namespace CPSC131::MyHashTable
 			 */
 			MyHashTable(const MyHashTable& other)
 			{
-				this->clear();
-				std::forward_list<std::string> keys = other.getAllKeys();
-				this->size_ = other.size();
-				this->n_collisions_ = other.n_collisions();
-				this->capacity_ = other.capacity();
-				this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[this->capacity_];
-				for(auto& i: keys){
-					size_t index = this->midSquareHash(i);
-					this->table_[index].emplace_front(i, other.get(i));
-				}
+				// this->clear();
+				// std::forward_list<std::string> keys = other.getAllKeys();
+				// this->size_ = other.size();
+				// this->n_collisions_ = other.n_collisions();
+				// this->capacity_ = other.capacity();
+				// this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[this->capacity_];
+				// for(auto& i: keys){
+				// 	size_t index = this->midSquareHash(i);
+				// 	this->table_[index].emplace_front(i, other.get(i));
+				// }
+				*this = other;
 			}
 			
 			/**
@@ -80,6 +81,7 @@ namespace CPSC131::MyHashTable
 					// }
 					this->table_->clear();
 				}
+				delete[] this->table_;
 				this->size_ =0;
 				this->n_collisions_ = 0;
 				this->capacity_ = 0;
@@ -150,8 +152,12 @@ namespace CPSC131::MyHashTable
 			{
 				if(this->table_ != nullptr){
 					std::forward_list<std::pair<std::string, VTYPE>>* temp = this->table_;
+					size_t prevCap = this->capacity_;
+					this->capacity_ = c;
+					this->n_collisions_ = 0;
+					this->size_ = 0;
 					this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[c];
-					for(size_t i = 0; i < this->capacity_; i++){
+					for(size_t i = 0; i < prevCap; i++){
 						for (auto& entry : temp[i])
 						{
 							this->add(entry.first, entry.second);
@@ -160,7 +166,13 @@ namespace CPSC131::MyHashTable
 					
 					delete[] temp;
 				}
-				this->capacity_ = c;
+				else{
+					this->table_ = new std::forward_list<std::pair<std::string, VTYPE>> [c];
+					this->capacity_ = c;
+					this->size_ = 0;
+					this->n_collisions_ = 0;
+					return;
+				}
 				
 			}
 			
@@ -303,12 +315,17 @@ namespace CPSC131::MyHashTable
 			void remove(std::string key)
 			{
 				size_t index = this->midSquareHash(key);
+				auto before = this->table_[index].before_begin();
 				for(auto& i : this->table_[index] ){
 					if(key == i.first){
-						this->table_[index].remove_if([&key](std::pair<std::string, VTYPE>& i ){ return i.first == key; });
+						if(this->table_[index].begin() != this->table_[index].end()){
+							n_collisions_--;
+						}
+						this->table_[index].erase_after(before);
 						this->size_--;
 						return ;
 					}
+					++before;
 				}
 				throw std::runtime_error("Cannot remove value for key because it doesn't exist: " + key);
 			}
@@ -332,15 +349,19 @@ namespace CPSC131::MyHashTable
 			 */
 			MyHashTable<VTYPE>& operator=(const MyHashTable<VTYPE>& other)
 			{
-				this->clear();
-				std::forward_list<std::string> keys = other.getAllKeys();
-				for(auto& i: keys){
-					size_t index = this->midSquareHash(i);
-					this->table_[index].emplace_front(i, other.get(i));
-				}
-				this->capacity_ = other.capacity();
+				delete[] this->table_;
+				this->table_ = nullptr;
+				this->setCapacity(other.capacity());
 				this->n_collisions_ = other.n_collisions();
 				this->size_ = other.size();
+				for(size_t i = 0; i < other.capacity_; i++){
+					if(!other.table_[i].empty()){
+						this->table_[i] = other.table_[i];
+					}
+				} 
+				// this->capacity_ = other.capacity();
+				// this->n_collisions_ = other.n_collisions();
+				// this->size_ = other.size();
 
 				return *this;
 			}
