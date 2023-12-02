@@ -62,7 +62,7 @@ namespace CPSC131::MyHashTable
 				this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[this->capacity_];
 				for(auto& i: keys){
 					size_t index = this->midSquareHash(i);
-					this->table_[index].push_front(make_pair(i, other.get(i)));
+					this->table_[index].emplace_front(i, other.get(i));
 				}
 			}
 			
@@ -219,7 +219,8 @@ namespace CPSC131::MyHashTable
 			 */
 			bool exists(std::string key) const
 			{
-				for(auto& i : *this->table_ ){
+				size_t index = this->midSquareHash(key);
+				for(auto& i : this->table_[index] ){
 					if(key == i.first){
 						return true;
 					}
@@ -234,13 +235,18 @@ namespace CPSC131::MyHashTable
 			void add(std::string key, VTYPE value)
 			{	
 				//std::cout << key << value << std::endl;
-				size_t index = this->midSquareHash(key);
+				
+				
 				for(auto& i : *this->table_ ){
 					if(key == i.first){
 					throw std::runtime_error("Key already exists: " + key);;
 					}
 				}
-            	table_[index].push_front(make_pair(key, value));
+				size_t index = this->midSquareHash(key);
+				if(!this->table_[index].empty()){
+					this->n_collisions_ ++;
+				}
+            	table_[index].emplace_front(key, value);
 				this->size_++;
 			}
 			
@@ -327,7 +333,7 @@ namespace CPSC131::MyHashTable
 				std::forward_list<std::string> keys = other.getAllKeys();
 				for(auto& i: keys){
 					size_t index = this->midSquareHash(i);
-					this->table_[index].push_front(make_pair(i, other.get(i)));
+					this->table_[index].emplace_front(i, other.get(i));
 				}
 				this->capacity_ = other.capacity();
 				this->n_collisions_ = other.n_collisions();

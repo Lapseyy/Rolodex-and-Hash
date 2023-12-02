@@ -10,11 +10,13 @@
 //
 #include <iostream>
 #include "MyHashTable.hpp"
+#include "MyRolodex.hpp"
 #include <string>
 #include <vector>
 #include "Address.hpp"
 using CPSC131::MyHashTable::MyHashTable;
 using CPSC131::MyRolodex::Address;
+using CPSC131::MyRolodex::MyRolodex;
  
 //
 using std::cout, std::cin, std::endl, std::string;
@@ -50,14 +52,33 @@ int main()
 	cout << "COMPLETED" << endl;
 
 	MyHashTable<string> table2(20);
-	cout << table.get("karl") << endl;
+	cout << "table  works " <<  table.get("karl") << endl;
 	table2 = table;
 	cout << "table 2 works " << table2.get("karl") << endl; 
 	MyHashTable<string> table3(table);
-	cout << table3.get("karl") << endl;
+	cout <<"tABLE 3 WORKS " << table3.get("karl") << endl;
 
 
 	table.clear();
+
+		//
+	MyRolodex dex;
+	
+	//
+	std::shared_ptr<Address> larry_address(new Address);
+	larry_address->line1 = "1212122 Lane Road";
+	larry_address->line2 = "";
+	larry_address->city = "Fullerton";
+	larry_address->state = "CA";
+	larry_address->zip = 92831;
+	larry_address->country = "US";
+
+	dex.add("Gary", "1212121 Lane Way", "", "Fullerton", "CA", 92831, "US");
+	dex.add("Larry", *larry_address);
+	dex.add("Harry", "1212123 Lane Place", "", "Fullerton", "CA", 92831, "US");
+	dex.add("Sally", "1212124 Lane Blvd", "", "Fullerton", "CA", 92831, "US");
+	Address larryReturn = dex.get("Larry");
+	cout << dex.exists("Larry") << endl;
 
 
 
