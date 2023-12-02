@@ -194,6 +194,11 @@ namespace CPSC131::MyHashTable
 			 */
 			bool exists(std::string key) const
 			{
+				for(auto& i : *this->table_ ){
+					if(key == i.first){
+						return true;
+					}
+				}
 				return false;
 			}
 			
@@ -271,9 +276,11 @@ namespace CPSC131::MyHashTable
 			void clear()
 			{
 				// for(std::pair<std::string, VTYPE>& c: this->table_){
-				// 	//cout <<  c.first() << endl;
-
-				// }
+				// 	cout <<  c.first() << endl;
+				
+				//}
+				this->table_->clear();
+				this->table_ = 0;
 			}
 			
 			/**
@@ -281,6 +288,17 @@ namespace CPSC131::MyHashTable
 			 */
 			MyHashTable<VTYPE>& operator=(const MyHashTable<VTYPE>& other)
 			{
+				this->table_->clear();
+				std::forward_list<std::string> keys = other.getAllKeys();
+				for(auto& i: keys){
+					this->table_->emplace_front(make_pair(i, other.get(i)));
+				
+				}
+				
+				this->capacity_ = other.capacity();
+				this->n_collisions_ = other.n_collisions();
+				this->size_ = other.size();
+
 				return *this;
 			}
 			

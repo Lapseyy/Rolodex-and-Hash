@@ -30,7 +30,7 @@ int main()
 	string name = "Edmarck" ;
 	string address = "ace";
 	table.add(name, address);
-	table.add("a", address);
+	table.add("a", "hello");
 	table.add("b", address);
 	cout << table.get(name) << endl;
 
@@ -38,8 +38,19 @@ int main()
 				for(auto& i : keys){
 					cout << i << endl;
 				}
-	table.remove(name);
-	table.get(name);
+	// table.remove(name);
+	// //table.get(name);
+	// cout << table.get("a") << endl;
+	// table.clear();
+	// cout << "HERE" << endl;
+	// cout << table.get("a") << endl;
+
+	MyHashTable<string> table2(20);
+	table2 = table;
+	cout << table.get("a") << endl;
+	cout << table2.get("a") << endl; 
+
 	return 0;
+
 }
 
