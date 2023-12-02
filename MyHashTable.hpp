@@ -13,6 +13,7 @@
 #include <memory>
 #include <string>
 #include <stdexcept>
+#include <iostream>
 
 
 //	More includes ... ?
@@ -41,7 +42,10 @@ namespace CPSC131::MyHashTable
 			 */
 			MyHashTable(size_t capacity = MyHashTable::DEFAULT_CAPACITY)
 			{
-				
+				this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[capacity];
+				this->setCapacity(capacity);
+				this->size_ = 0;
+				this->n_collisions_ = 0;
 			}
 			
 			/**
@@ -49,7 +53,10 @@ namespace CPSC131::MyHashTable
 			 */
 			MyHashTable(const MyHashTable& other)
 			{
-				
+				this->table_ = other.table_;
+				this->size_ = other.size();
+				this->n_collisions_ = other.n_collisions();
+				this->capacity_ = other.capacity();
 			}
 			
 			/**
@@ -60,7 +67,14 @@ namespace CPSC131::MyHashTable
 			 */
 			~MyHashTable()
 			{
-				
+				if(this->table_ != nullptr){
+					while(this->table_ != nullptr){
+						this->table_->pop_front();
+					}
+				}
+				this->size_ =0;
+				this->n_collisions_ = 0;
+				this->capacity_ = 0;
 			}
 			
 			/**
@@ -70,7 +84,7 @@ namespace CPSC131::MyHashTable
 			 */
 			size_t capacity() const
 			{
-				return 0;
+				return this->capacity_;
 			}
 			
 			/**
@@ -78,7 +92,7 @@ namespace CPSC131::MyHashTable
 			 */
 			size_t size() const
 			{
-				return 0;
+				return this->size_;
 			}
 			
 			/**
@@ -86,7 +100,10 @@ namespace CPSC131::MyHashTable
 			 */
 			bool empty() const
 			{
-				return true;
+				if(this->size_ == 0){
+					return true;
+				}
+				return false;
 			}
 			
 			/**
@@ -94,7 +111,7 @@ namespace CPSC131::MyHashTable
 			 */
 			size_t n_collisions() const
 			{
-				return 0;
+				return this->n_collisions_;
 			}
 			
 			/**
@@ -123,7 +140,16 @@ namespace CPSC131::MyHashTable
 			 */
 			void setCapacity(size_t c)
 			{
-				
+				if(this->table_ != nullptr){
+					std::forward_list<std::pair<std::string, VTYPE>>* temp = this->table_;
+					this->table_ = new std::forward_list<std::pair<std::string, VTYPE>>[c];
+					for (auto& entry : *temp)
+					{
+						this->add(entry.first, entry.second);
+					}
+					delete[] temp;
+				}
+				this->capacity_ = c;
 			}
 			
 			///	Your welcome
@@ -176,10 +202,11 @@ namespace CPSC131::MyHashTable
 			 * If the key already exists, throw a runtime_error.
 			 */
 			void add(std::string key, VTYPE value)
-			{
-				// if (){
-
-				// }
+			{	
+				//std::cout << key << value << std::endl;
+				//size_t index = hash(key) % capacity_;
+            	table_->emplace_front(make_pair(key, value));
+				std::cout << "we hhere :3" << std::endl;
 			}
 			
 			/**
@@ -226,7 +253,10 @@ namespace CPSC131::MyHashTable
 			 */
 			void clear()
 			{
-				
+				// for(std::pair<std::string, VTYPE>& c: this->table_){
+				// 	//cout <<  c.first() << endl;
+
+				// }
 			}
 			
 			/**

@@ -9,10 +9,14 @@
 
 //
 #include <iostream>
-
-
+#include "MyHashTable.hpp"
+#include <string>
+#include "Address.hpp"
+using CPSC131::MyHashTable::MyHashTable;
+using CPSC131::MyRolodex::Address;
+ 
 //
-using std::cout, std::cin, std::endl;
+using std::cout, std::cin, std::endl, std::string;
 
 
 //
@@ -21,6 +25,11 @@ int main()
 	//
 	cout << "Hi. Put anything here you'd like." << endl;
 	cout << "Testing git" << endl;
+	MyHashTable<string> table(20);
+	cout << table.capacity() << endl;
+	string name = "Edmarck" ;
+	string address = "ace";
+	table.add(name, address);
 	
 	return 0;
 }
